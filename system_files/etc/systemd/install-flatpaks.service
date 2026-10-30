@@ -1,0 +1,13 @@
+[Unit]
+Description=Install user-required Flatpaks
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=!/var/lib/.install-flatpaks
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/flatpak install --system -y flathub com.spotify.Client md.obsidian.Obsidian org.onlyoffice.desktopeditors
+ExecStartPost=/usr/bin/touch /var/lib/.install-flatpaks
+
+[Install]
+WantedBy=multi-user.target
