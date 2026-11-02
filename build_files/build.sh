@@ -6,9 +6,15 @@ set -ouex pipefail
 cp -avf "/ctx/system_files"/. /
 
 # Install packages
+dnf5 install -y \
+chezmoi \
+neovim \
+quickemu \
+seahorse \
+steam
 
-dnf5 install -y steam
-
-# Enable System Unit Files
-
+# Enable system unit files
 systemctl enable install-flatpaks.service
+
+# Enable user unit files
+systemctl enable --global chezmoi-init.service
