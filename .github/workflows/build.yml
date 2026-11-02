@@ -3,12 +3,12 @@ name: Build container image
 on:
   pull_request:
     branches:
-      - bluefin-dx
+      - bluefin
   schedule:
     - cron: '05 10 * * *'  # 10:05am UTC everyday
   push:
     branches:
-      - bluefin-dx
+      - bluefin
     paths-ignore:
       - '**/README.md'
   workflow_dispatch:
