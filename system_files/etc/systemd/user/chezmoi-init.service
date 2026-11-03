@@ -1,5 +1,5 @@
 [Unit]
-Description=Initialize and apply Chezmoi dotfiles
+Description=Initialise and apply Chezmoi dotfiles
 After=network-online.target
 Wants=network-online.target
 ConditionPathExists=!%h/.local/share/chezmoi
