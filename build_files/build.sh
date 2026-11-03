@@ -8,7 +8,6 @@ cp -avf "/ctx/system_files"/. /
 # Install packages
 dnf5 install -y \
 chezmoi \
-neovim \
 quickemu \
 seahorse \
 steam
