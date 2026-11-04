@@ -16,8 +16,5 @@ seahorse \
 steam \
 yad
 
-# Enable system unit files
-systemctl enable install-flatpaks.service
-
-# Enable user unit files
-systemctl enable --global chezmoi-init.service
+# Ensure the yad-setup script is executable
+chmod +x /usr/libexec/yad-setup.sh
