@@ -2,7 +2,7 @@
 
 set -e
 
-MARKER="$HOME/.config/.yad-setup"
+MARKER="$HOME/.local/state/yad-setup"
 if [ -f "$MARKER" ]; then
   exit 0
 fi
