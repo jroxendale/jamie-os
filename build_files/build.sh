@@ -16,5 +16,8 @@ seahorse \
 steam \
 yad
 
+# Compile gsettings schemas to apply custom overrides
+glib-compile-schemas /usr/share/glib-2.0/schemas/
+
 # Ensure the yad-setup script is executable
 chmod +x /usr/libexec/yad-setup.sh
