@@ -24,6 +24,9 @@ yad
 # Clean cache to minimize container layer size
 dnf5 clean all
 
+# Enable custom systemd services
+systemctl enable set-hostname.service
+
 # Compile gsettings schemas to apply custom overrides
 glib-compile-schemas /usr/share/glib-2.0/schemas/
 
