@@ -3,6 +3,6 @@ Name=Initialise yad-based setup process
 Exec=/usr/libexec/yad-setup.sh
 Terminal=false
 Type=Application
-StartupNotify=true
+StartupNotify=false
 Categories=Utility;
 X-GNOME-Autostart-enabled=true
