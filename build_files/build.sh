@@ -16,6 +16,7 @@ rm -f \
 # Install packages
 dnf5 install -y \
 chezmoi \
+gnome-shell-extension-no-overview \
 quickemu \
 seahorse \
 steam \
@@ -26,9 +27,6 @@ dnf5 clean all
 
 # Enable custom systemd services
 systemctl enable set-hostname.service
-
-# Compile gsettings schemas to apply custom overrides
-glib-compile-schemas /usr/share/glib-2.0/schemas/
 
 # Ensure the yad-setup script is executable
 chmod +x /usr/libexec/yad-setup.sh
