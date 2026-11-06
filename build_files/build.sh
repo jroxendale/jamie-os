@@ -10,8 +10,8 @@ dnf5 remove -y gnome-tour
 
 # Remove web shortcut desktop entries
 rm -f \
-/usr/share/applications/bluefin-documentation.desktop \
-/usr/share/applications/bluefin-community.desktop
+/usr/share/applications/discourse.desktop \
+/usr/share/applications/documentation.desktop
 
 # Install packages
 dnf5 install -y \
