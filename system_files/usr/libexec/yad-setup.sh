@@ -82,8 +82,6 @@ CURRENT=0
   --title="System Setup" \
   --text="<b>Setting things up...</b>\nPlease wait while applications and settings are installed." \
   --fullscreen \
-  --undecorated \
   --no-buttons \
   --no-escape \
-  --on-top \
   --auto-close
