@@ -7,6 +7,27 @@ if [ -f "$MARKER" ]; then
   exit 0
 fi
 
+#----------Kiosk lockdown----------#
+
+function restore_keys() {
+  gsettings reset org.gnome.desktop.wm.keybindings close
+  gsettings reset org.gnome.desktop.session idle-delay
+  gsettings reset org.gnome.mutter overlay-key
+  gsettings reset org.gnome.desktop.wm.keybindings panel-run-dialog
+  gsettings reset org.gnome.desktop.wm.keybindings switch-applications
+  gsettings reset org.gnome.desktop.wm.keybindings switch-to-workspace-left
+  gsettings reset org.gnome.desktop.wm.keybindings switch-to-workspace-right
+}
+trap restore_keys EXIT
+
+gsettings set org.gnome.desktop.wm.keybindings close "[]"
+gsettings set org.gnome.desktop.session idle-delay 0
+gsettings set org.gnome.mutter overlay-key ''
+gsettings set org.gnome.desktop.wm.keybindings panel-run-dialog "[]"
+gsettings set org.gnome.desktop.wm.keybindings switch-applications "[]"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left "[]"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "[]"
+
 #----------Establish internet connectivity----------#
 
 if ! ping -c 1 -W 2 1.1.1.1 >/dev/null 2>&1; then
