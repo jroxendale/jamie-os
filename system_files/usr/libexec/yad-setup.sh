@@ -41,6 +41,16 @@ if ! ping -c 1 -W 2 1.1.1.1 >/dev/null 2>&1; then
   kill $PROMPT_PID 2>/dev/null || true
 fi
 
+#----------Start progress bar----------#
+
+exec 3> >(exec yad --progress \
+  --title="System Setup" \
+  --text="<b>Setting things up...</b>\nPlease wait while applications and settings are installed." \
+  --fullscreen \
+  --no-buttons \
+  --no-escape)
+PROGRESS_PID=$!
+
 #----------Install flatpaks----------#
 
 FLATPAKS=(
@@ -77,32 +87,47 @@ FLATPAKS=(
 TOTAL=${#FLATPAKS[@]}
 CURRENT=0
 
-(
-  for app in "${FLATPAKS[@]}"; do
-    CURRENT=$((CURRENT + 1))
-    PERCENT=$((CURRENT * 90 / TOTAL))
-    echo "$PERCENT"
-    echo "# Installing $app..."
-    flatpak install --system -y flathub "$app" >/dev/null 2>&1 || true
-  done
+for app in "${FLATPAKS[@]}"; do
+  CURRENT=$((CURRENT + 1))
+  PERCENT=$((CURRENT * 90 / TOTAL))
+  echo "$PERCENT" >&3
+  echo "# Installing $app..." >&3
+  flatpak install --system -y flathub "$app" >/dev/null 2>&1 || true
+done
 
 #----------Initialise chezmoi----------#
 
-  echo "90"
-  echo "# Applying configurations and developer tools..."
-  chezmoi init --apply https://github.com/jroxendale/dotfiles.git >/dev/null 2>&1 || true
+echo "90" >&3
+echo "# Applying configurations and developer tools..." >&3
+chezmoi init --apply https://github.com/jroxendale/dotfiles.git >/dev/null 2>&1 || true
 
 #----------Finish setup----------#
 
-  echo "100"
-  echo "# Setup Complete."
-  sleep 2
-  touch "$MARKER"
+echo "100" >&3
+echo "# Setup Complete." >&3
+sleep 5
+touch "$MARKER"
 
-) | yad --progress \
-  --title="System Setup" \
-  --text="<b>Setting things up...</b>\nPlease wait while applications and settings are installed." \
-  --fullscreen \
-  --no-buttons \
-  --no-escape \
-  --auto-close
+(sleep 0.5; kill "$PROGRESS_PID" 2>/dev/null || true) &
+
+set +e
+
+yad --title="System Setup" \
+    --text="<span font='28' weight='heavy'>Deployment Successful</span>\n\n<span font='14'>Your personalized OS is ready.</span>\n\n<span font='12'>A session restart is required to activate all extensions.</span>" \
+    --justify="center" \
+    --button="Log Out:0" --button="Reboot:1" --button="Shut Down:2" \
+    --timeout=10 --timeout-indicator=bottom \
+    --fullscreen
+
+USER_CHOICE=$?
+
+set -e
+
+exec 3>&-
+
+case $USER_CHOICE in
+    0|70) loginctl terminate-user "$USER" ;;
+    1) systemctl reboot ;;
+    2) systemctl poweroff ;;
+    *) loginctl terminate-user "$USER" ;;
+esac
